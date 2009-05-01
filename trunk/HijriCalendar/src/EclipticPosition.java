@@ -7,7 +7,7 @@
 
 /**
  *
- * @author mgeden
+ * @author http://www.cepmuvakkit.com
  */
 public class EclipticPosition {
 

@@ -7,7 +7,7 @@
 
 /**
  *
- * @author mgeden
+ * @author http://www.cepmuvakkit.com
  */
 public interface MoonPhases {
   public   double calculatePhase(double T);

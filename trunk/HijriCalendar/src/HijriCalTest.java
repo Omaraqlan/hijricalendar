@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 
 /**
  *
- * @author mgeden
+ * @author http://www.cepmuvakkit.com
  */
 public class HijriCalTest {
     private static int year,month,day;
