@@ -1,9 +1,16 @@
+package astroLib;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
 
+import astroLib.NewMoon;
+import astroLib.MoonPhases;
+import astroLib.APC_Math;
+import astroLib.CrescentMoon;
+import astroLib.APC_Time;
 import java.util.Calendar;
 /**
  *
@@ -12,7 +19,7 @@ import java.util.Calendar;
 public class HijriCalendar {
      private Calendar cal;
      private double MJD;
-     private String ismiSuhiri[]={
+   private String ismiSuhiri[]={
        "MUHARRAM","SAFAR","REBIULAVVAL","REBIULAHIR",
        "JAMIZIALAVVAL","JAMIZIALAHIR","RAJAB","SHABAN",
        "RAMADHAN","SHAVVAL", "ZILKADE","ZILHICCE"};
@@ -31,9 +38,12 @@ public class HijriCalendar {
 
       //  MJD = MJD0 + Hour/24.0;//
       // Constants
-      this.MJD=ModifiedJulianDay.Mjd(Year, Month, Day, 0,0,0);
-      cal=ModifiedJulianDay.ToCalendarDate(MJD);
-    // System.out.println("MJD "+ModifiedJulianDay.DateTimeHHMM(MJD));
+
+      this.MJD= APC_Time.Mjd(Year, Month, Day, 0,0,0);
+    //cal=APC_Time.CalDat(MJD) ;
+  
+      cal=APC_Time.CalDat(MJD) ;
+    // System.out.println("MJD "+APC_Time.DateTimeHHMM(MJD));
       final double synmonth=29.530588687;// Synodic Month Period
       final double dT  = 7.0 / 36525.0;           // Step (1 week)
       final double dTc  = 3.0 / 36525.0;          // Step (3 days)
@@ -59,11 +69,11 @@ public class HijriCalendar {
            T1=T0; D1=D0; T0-=dT; D0=newMoon.calculatePhase(T0);//Finds correct week for iteration
        }
       // Iterate NewMoon time
-      TNewMoon=RootFinder (newMoon,T0,T1, Acc,isFound);
+      TNewMoon=APC_Math.Pegasus (newMoon,T0,T1, Acc,isFound);
       // Correct for difference of ephemeris time and universal time currently disabled
       // ETminUT ( TPhase, ET_UT, valid );
       newMoonMoment = ( TNewMoon*36525.0+MJD_J2000);// - ET_UT/86400.0;
-      //System.out.println("newMoonMoment "+ModifiedJulianDay.DateTimeHHMM(newMoonMoment ));
+      //System.out.println("newMoonMoment "+APC_Time.DateTimeHHMM(newMoonMoment ));
       Lunation=(int) Math.floor(( newMoonMoment+7-MLunatBase)/synmonth)+1;
       hijriYear= (Lunation+5)/12+1341;
       hijriMonth= (Lunation+5)%12;// Returns 0 for Zilhicce and 1 for Muharrem 2 for Safer  ....
@@ -71,9 +81,9 @@ public class HijriCalendar {
 
       //hijriMonth= (Lunation+5)%12;//Starting from 0..11  1=Muharrem 11=Zilhicce
       if ( isFound[0]){
-          TCrescent=RootFinder(crescentMoon,TNewMoon,TNewMoon+dTc,Acc,isFound);
+          TCrescent=APC_Math.Pegasus(crescentMoon,TNewMoon,TNewMoon+dTc,Acc,isFound);
           crescentMoonMoment=  TCrescent*36525.0+MJD_J2000;
-         // System.out.println("crescentMoonMoment "+ModifiedJulianDay.DateTimeHHMM(crescentMoonMoment ));
+         // System.out.println("crescentMoonMoment "+APC_Time.DateTimeHHMM(crescentMoonMoment ));
       }
        //0.279166666666667 comes from the hours 5:18 am
    //  System.out.println(" MJD:" +(MJD));
@@ -86,7 +96,65 @@ public class HijriCalendar {
        
 
     }
-   
+     public HijriCalendar(double MJD,boolean afterMagrib)
+
+    {      if   (afterMagrib)   MJD++;
+              //  MJD = MJD0 + Hour/24.0;//
+      // Constants
+      this.MJD=MJD;
+      cal=APC_Time.CalDat(MJD) ;
+    // System.out.println("MJD "+APC_Time.DateTimeHHMM(MJD));
+      final double synmonth=29.530588687;// Synodic Month Period
+      final double dT  = 7.0 / 36525.0;           // Step (1 week)
+      final double dTc  = 3.0 / 36525.0;          // Step (3 days)
+      final double Acc = (0.5/1440.0) / 36525.0;  // Desired Accuracy (0.5 min)
+      final double MJD_J2000=51544.5;
+      final double MLunatBase=23435.5;  //  Modified Base date for E. W. Brown's numbered  series of
+                                        //  lunations (1923 January 16) 2423436-2400000.5=23435.5
+
+
+      double  Tnow,T0,T1,TNewMoon,TCrescent; // Time( Ephemeris:disabled) in Julian centuries since J2000
+      double  D0, D1;  //Difference between the longitude of the Moon from the Sun.
+      Tnow = (MJD-MJD_J2000 ) / 36525.0;//0.09477070499657769
+      T1=Tnow;//-1/36525.0;//0.09474332648870637 24/6/2009
+      T0 = T1 - dT;  // decrease 1 week,//0.09455167693360712
+      isFound= new boolean[1];
+      isFound[0]=false;
+      // Search for phases   bracket desired phase event
+       MoonPhases newMoon=new NewMoon();
+       MoonPhases crescentMoon=new CrescentMoon();
+       D1 =newMoon.calculatePhase(T1);//0.044833495303684856
+       D0 =newMoon.calculatePhase(T0);//-1.5562339964369751
+       while ( (D0*D1>0.0) || (D1<D0) ) {
+           T1=T0; D1=D0; T0-=dT; D0=newMoon.calculatePhase(T0);//Finds correct week for iteration
+       }
+      // Iterate NewMoon time
+      TNewMoon=APC_Math.Pegasus (newMoon,T0,T1, Acc,isFound);
+      // Correct for difference of ephemeris time and universal time currently disabled
+      // ETminUT ( TPhase, ET_UT, valid );
+      newMoonMoment = ( TNewMoon*36525.0+MJD_J2000);// - ET_UT/86400.0;
+      //System.out.println("newMoonMoment "+APC_Time.DateTimeHHMM(newMoonMoment ));
+      Lunation=(int) Math.floor(( newMoonMoment+7-MLunatBase)/synmonth)+1;
+      hijriYear= (Lunation+5)/12+1341;
+      hijriMonth= (Lunation+5)%12;// Returns 0 for Zilhicce and 1 for Muharrem 2 for Safer  ....
+      if (hijriMonth==0) hijriMonth=12;
+
+      //hijriMonth= (Lunation+5)%12;//Starting from 0..11  1=Muharrem 11=Zilhicce
+      if ( isFound[0]){
+          TCrescent=APC_Math.Pegasus(crescentMoon,TNewMoon,TNewMoon+dTc,Acc,isFound);
+          crescentMoonMoment=  TCrescent*36525.0+MJD_J2000;
+         // System.out.println("crescentMoonMoment "+APC_Time.DateTimeHHMM(crescentMoonMoment ));
+      }
+       //0.279166666666667 comes from the hours 5:18 am
+//     System.out.println(" MJD:" +(MJD));
+        hijriDay=(int) (MJD-Math.round(crescentMoonMoment+0.279166666666667))+1;
+        if (hijriDay==0)
+        {   hijriDay=30;
+            hijriMonth--;
+            if (hijriMonth==0) hijriMonth=12;
+        }
+       
+    }
  public int getHijriYear()
     {
        
@@ -164,101 +232,11 @@ public class HijriCalendar {
 
 
    }
-
-   public String getDay() {
+     public String getDay() {
         String daysName[]={"SUNDAY", "MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"};
     	return daysName[cal.get(Calendar.DAY_OF_WEEK)-1];
 
     }
-
-
- //------------------------------------------------------------------------------
-//
-// Pegasus: Root finder using the Pegasus method
-//
-// Input:
-//
-//   PegasusFunct  Pointer to the function to be examined
-//
-//   LowerBound    Lower bound of search interval
-//   UpperBound    Upper bound of search interval
-//   Accuracy      Desired accuracy for the root
-//
-// Output:
-//
-//   Root          Root found (valid only if Success is true)
-//   Success       Flag indicating success of the routine
-//
-// References:
-//
-//   Dowell M., Jarratt P., 'A modified Regula Falsi Method for Computing
-//     the root of an equation', BIT 11, p.168-174 (1971).
-//   Dowell M., Jarratt P., 'The "PEGASUS Method for Computing the root
-//     of an equation', BIT 12, p.503-508 (1972).
-//   G.Engeln-Muellges, F.Reutter, 'Formelsammlung zur Numerischen
-//     Mathematik mit FORTRAN77-Programmen', Bibliogr. Institut,
-//     Zuerich (1986).
-//
-// Notes:
-//
-//   Pegasus assumes that the root to be found is bracketed in the interval
-//   [LowerBound, UpperBound]. Ordinates for these abscissae must therefore
-//   have different signs.
-//
-//------------------------------------------------------------------------------
-public static double RootFinder (MoonPhases moonPhase, double LowerBound, double UpperBound, double  Accuracy, boolean[] Success )
-{
-
-
- double x1=LowerBound;
- double x2=UpperBound;
- double f1 = moonPhase.calculatePhase(x1);
- double f2 = moonPhase.calculatePhase(x2);
- double x3 ,f3,Root;
- int MaxIterat = 30;
-
-  int Iterat = 0;
-
-   // Initialization
-  Success[0] = false;
-  Root    = x1;
-
-
-  // Iteration
-  if ( f1 * f2 < 0.0 )
-    do
-    {
-      // Approximation of the root by interpolation
-      x3 = x2 - f2/( (f2-f1)/(x2-x1) ); f3 = moonPhase.calculatePhase(x3);
-
-      // Replace (x1,f2) and (x2,f2) by new values, such that
-      // the root is again within the interval [x1,x2]
-      if ( f3 * f2 <= 0.0 ) {
-        // Root in [x2,x3]
-        x1 = x2; f1 = f2; // Replace (x1,f1) by (x2,f2)
-        x2 = x3; f2 = f3; // Replace (x2,f2) by (x3,f3)
-      }
-      else {
-        // Root in [x1,x3]
-        f1 = f1 * f2/(f2+f3); // Replace (x1,f1) by (x1,f1')
-        x2 = x3; f2 = f3;     // Replace (x2,f2) by (x3,f3)
-      }
-
-      if (Math.abs(f1) < Math.abs(f2))
-       Root = x1;
-      else
-        Root = x2;
-
-      Success[0]  = (Math.abs(x2-x1) <= Accuracy);
-      Iterat++;
-    }
-    while ( !Success[0]  && (Iterat<MaxIterat) );
-
-
-
- return Root;
-}
-
 /*
 //------------------------------------------------------------------------------
 //

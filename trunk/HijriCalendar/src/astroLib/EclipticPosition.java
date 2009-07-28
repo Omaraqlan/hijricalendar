@@ -1,3 +1,8 @@
+package astroLib;
+
+
+import astroLib.APC_Math;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -7,11 +12,24 @@
 
 /**
  *
- * @author http://www.cepmuvakkit.com
+ * @author mgeden
  */
 public class EclipticPosition {
 
-  static  double  getMiniSunLongitude (double T)
+    //------------------------------------------------------------------------------
+//
+// MiniSun: Computes the Sun's RA and declination using a low precision
+//          analytical series
+//
+// Input:
+//
+//   T         Time in Julian centuries since J2000
+//
+// Output:
+//
+//   L        ecliptic longitude  of the Sun in [rad]
+//------------------------------------------------------------------------------
+static  double  getMiniSunLongitude (double T)
 {
   //
   // Constants
@@ -27,8 +45,8 @@ public class EclipticPosition {
   double M;
 
   // Mean anomaly and ecliptic longitude
-  M  = pi2 * frac( 0.993133 + 99.997361*T);
-  return  pi2 * frac( 0.7859453 + M/pi2 +  (6893.0*Math.sin(M)+72.0*Math.sin(2.0*M)+6191.2*T) / 1296.0e3);
+  M  = pi2 * APC_Math.Frac ( 0.993133 + 99.997361*T);
+  return  pi2 * APC_Math.Frac ( 0.7859453 + M/pi2 +  (6893.0*Math.sin(M)+72.0*Math.sin(2.0*M)+6191.2*T) / 1296.0e3);
 
 
 
@@ -66,12 +84,12 @@ static double[]  getMiniMoon (double T)
   // Mean elements of lunar orbit
   //APC_Math APCMath = new APC_Math ();
 
-  L_0 = frac(0.606433 + 1336.855225*T);       // mean longitude [rev]
+  L_0 = APC_Math.Frac (0.606433 + 1336.855225*T);       // mean longitude [rev]
 
-  l  = pi2*frac ( 0.374897 + 1325.552410*T );  // Moon's mean anomaly
-  ls = pi2*frac( 0.993133 +   99.997361*T );  // Sun's mean anomaly
-  D  = pi2*frac( 0.827361 + 1236.853086*T );  // Diff. long. Moon-Sun
-  F  = pi2*frac( 0.259086 + 1342.227825*T );  // Dist. from ascending node
+  l  = pi2*APC_Math.Frac ( 0.374897 + 1325.552410*T );  // Moon's mean anomaly
+  ls = pi2*APC_Math.Frac ( 0.993133 +   99.997361*T );  // Sun's mean anomaly
+  D  = pi2*APC_Math.Frac ( 0.827361 + 1236.853086*T );  // Diff. long. Moon-Sun
+  F  = pi2*APC_Math.Frac ( 0.259086 + 1342.227825*T );  // Dist. from ascending node
 
 
   // Perturbations in longitude and latitude
@@ -86,16 +104,11 @@ static double[]  getMiniMoon (double T)
 
 
   // Ecliptic longitude and latitude
-  moonLongLat[0]= pi2 * frac( L_0 + dL/1296.0e3 ); // [rad]3.4870735266982229//1.41
+  moonLongLat[0]= pi2 * APC_Math.Frac( L_0 + dL/1296.0e3 ); // [rad]3.4870735266982229//1.41
   moonLongLat[1]= ( 18520.0*Math.sin(S) + N ) / Arcs;   // [rad]-0.072743688054476285
 
  return  moonLongLat;
 
 }
 
-static public double frac (double x)
-
-    {
-        return x-(long)x;
-    }
 }
