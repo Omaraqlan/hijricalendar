@@ -7,10 +7,9 @@ package astroLib;
 
 
 import java.util.Calendar;
-
 /**
  *
- * @author mehmetrg
+ * @author http://www.cepmuvakkit.com
  */
 public class APC_Time {
 

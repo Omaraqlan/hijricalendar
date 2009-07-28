@@ -6,12 +6,9 @@ package astroLib;
  */
 
 
-
-
-
 /**
  *
- * @author mehmetrg
+ * @author http://www.cepmuvakkit.com
  */
 public class APC_Math {
 

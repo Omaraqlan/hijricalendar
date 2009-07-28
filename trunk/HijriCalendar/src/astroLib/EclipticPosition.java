@@ -8,11 +8,9 @@ import astroLib.APC_Math;
  * and open the template in the editor.
  */
 
-
-
 /**
  *
- * @author mgeden
+ * @author http://www.cepmuvakkit.com
  */
 public class EclipticPosition {
 

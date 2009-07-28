@@ -34,7 +34,7 @@ public class HijriCalTest {
          System.out.print("Enter Gregorian Day = ");
          try {    day =Integer.parseInt(br.readLine()); } catch (IOException ioe) {     System.out.println("Wrong input!"); System.exit(1);  }
 
-        HijriCalendar hijriCalendar =new HijriCalendar( year,month,day);
+       HijriCalendar hijriCalendar =new HijriCalendar( year,month,day);
        String hijriDate=hijriCalendar.getHicriTakvim();
        System.out.println("HijriDate ="+hijriDate);
 

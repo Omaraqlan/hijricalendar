@@ -8,12 +8,9 @@ import astroLib.EclipticPosition;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-
 /**
  *
- * @author mgeden
+ * @author http://www.cepmuvakkit.com
  */
 public class NewMoon extends MoonPhases {
 
