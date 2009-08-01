@@ -6,11 +6,6 @@ package astroLib;
  */
 
 
-import astroLib.NewMoon;
-import astroLib.MoonPhases;
-import astroLib.APC_Math;
-import astroLib.CrescentMoon;
-import astroLib.APC_Time;
 import java.util.Calendar;
 /**
  *
@@ -99,57 +94,7 @@ public class HijriCalendar {
        
 
     }
-     public HijriCalendar(double MJD,boolean afterMagrib)
-
-    {      if   (afterMagrib)   MJD++;
-              //  MJD = MJD0 + Hour/24.0;//
-      // Constants
-      this.MJD=MJD;
-      cal=APC_Time.CalDat(MJD) ;
-    // System.out.println("MJD "+APC_Time.DateTimeHHMM(MJD));
      
-      double  Tnow,T0,T1,TNewMoon,TCrescent; // Time( Ephemeris:disabled) in Julian centuries since J2000
-      double  D0, D1;  //Difference between the longitude of the Moon from the Sun.
-      Tnow = (MJD-MJD_J2000 ) / 36525.0;//0.09477070499657769
-      T1=Tnow;//-1/36525.0;//0.09474332648870637 24/6/2009
-      T0 = T1 - dT;  // decrease 1 week,//0.09455167693360712
-      isFound= new boolean[1];
-      isFound[0]=false;
-      // Search for phases   bracket desired phase event
-       MoonPhases newMoon=new NewMoon();
-       MoonPhases crescentMoon=new CrescentMoon();
-       D1 =newMoon.calculatePhase(T1);//0.044833495303684856
-       D0 =newMoon.calculatePhase(T0);//-1.5562339964369751
-       while ( (D0*D1>0.0) || (D1<D0) ) {
-           T1=T0; D1=D0; T0-=dT; D0=newMoon.calculatePhase(T0);//Finds correct week for iteration
-       }
-      // Iterate NewMoon time
-      TNewMoon=APC_Math.Pegasus (newMoon,T0,T1, Acc,isFound);
-      // Correct for difference of ephemeris time and universal time currently disabled
-      // ETminUT ( TPhase, ET_UT, valid );
-      newMoonMoment = ( TNewMoon*36525.0+MJD_J2000);// - ET_UT/86400.0;
-      //System.out.println("newMoonMoment "+APC_Time.DateTimeHHMM(newMoonMoment ));
-      Lunation=(int) Math.floor(( newMoonMoment+7-MLunatBase)/synmonth)+1;
-          hijriYear= (Lunation+4)/12+1341;
-      hijriMonth= (Lunation+4)%12+1;  // Returns 1 for Muharrem 2 for Safer  .... 12 for Zilhicce
-     // if (hijriMonth==0) hijriMonth=12;
-
-      //hijriMonth= (Lunation+5)%12;//Starting from 0..11  1=Muharrem 11=Zilhicce
-      if ( isFound[0]){
-          TCrescent=APC_Math.Pegasus(crescentMoon,TNewMoon,TNewMoon+dTc,Acc,isFound);
-          crescentMoonMoment=  TCrescent*36525.0+MJD_J2000;
-         // System.out.println("crescentMoonMoment "+APC_Time.DateTimeHHMM(crescentMoonMoment ));
-      }
-       //0.279166666666667 comes from the hours 5:18 am
-//     System.out.println(" MJD:" +(MJD));
-        hijriDay=(int) (MJD-Math.round(crescentMoonMoment+0.279166666666667))+1;
-        if (hijriDay==0)
-        {   hijriDay=30;
-            hijriMonth--;
-            if (hijriMonth==0) hijriMonth=12;
-        }
-       
-    }
  public int getHijriYear()
     {
        
