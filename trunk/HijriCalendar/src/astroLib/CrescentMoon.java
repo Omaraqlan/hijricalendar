@@ -10,9 +10,8 @@ package astroLib;
  * @author http://www.cepmuvakkit.com
  */
 public class CrescentMoon extends MoonPhases {
-    
  EclipticPosition eclipPos;
-    //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //
 // PhasesFunc: Goal function for search of phase events [-pi, pi]
 //
