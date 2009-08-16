@@ -1,13 +1,9 @@
 package astroLib;
-
 /**
  *
  * @author http://www.cepmuvakkit.com
  */
-public class APC_Math {
-
-    
-    
+public class APC_Math {    
 //------------------------------------------------------------------------------
 //
 // Frac: Gives the fractional part of a number
@@ -19,7 +15,6 @@ static double Frac (double x)
    
    return x-(long)x;
 }
-
 
 //------------------------------------------------------------------------------
 //
@@ -128,8 +123,6 @@ public static double Pegasus (MoonPhases moonPhase, double LowerBound, double Up
       Iterat++;
     }
     while ( !Success[0]  && (Iterat<MaxIterat) );
-
-
 
  return Root;
 }
