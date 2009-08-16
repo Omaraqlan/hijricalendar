@@ -1,8 +1,5 @@
 package astroLib;
 
-
-import astroLib.APC_Math;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -29,24 +26,12 @@ public class EclipticPosition {
 //------------------------------------------------------------------------------
 static  double  getMiniSunLongitude (double T)
 {
-  //
-  // Constants
-  //
- // double eps =Math.toRadians( 23.43929111);
   double pi2=Math.PI*2;
-
-  //
-  // Variables
-  //
-
-
   double M;
 
   // Mean anomaly and ecliptic longitude
   M  = pi2 * APC_Math.Frac ( 0.993133 + 99.997361*T);
   return  pi2 * APC_Math.Frac ( 0.7859453 + M/pi2 +  (6893.0*Math.sin(M)+72.0*Math.sin(2.0*M)+6191.2*T) / 1296.0e3);
-
-
 
 }
 
@@ -67,20 +52,13 @@ static  double  getMiniSunLongitude (double T)
 //------------------------------------------------------------------------------
 static double[]  getMiniMoon (double T)
  {
-  //
-  // Constants
-  //*BU*
+ 
  double[] moonLongLat = new double[2];
-// double eps =Math.toRadians( 23.43929111);
  double pi2=2*Math.PI;
  double	 Arcs      = 3600.0*180.0/Math.PI;
-  //
   // Variables
-  double L_0, l,ls, F, D, dL, S, h, N;
- // double  b_Moon;
-
-  // Mean elements of lunar orbit
-  //APC_Math APCMath = new APC_Math ();
+ double L_0, l,ls, F, D, dL, S, h, N;
+ // Mean elements of lunar orbit
 
   L_0 = APC_Math.Frac (0.606433 + 1336.855225*T);       // mean longitude [rev]
 
@@ -102,8 +80,8 @@ static double[]  getMiniMoon (double T)
 
 
   // Ecliptic longitude and latitude
-  moonLongLat[0]= pi2 * APC_Math.Frac( L_0 + dL/1296.0e3 ); // [rad]3.4870735266982229//1.41
-  moonLongLat[1]= ( 18520.0*Math.sin(S) + N ) / Arcs;   // [rad]-0.072743688054476285
+  moonLongLat[0]= pi2 * APC_Math.Frac( L_0 + dL/1296.0e3 ); 
+  moonLongLat[1]= ( 18520.0*Math.sin(S) + N ) / Arcs;    
 
  return  moonLongLat;
 

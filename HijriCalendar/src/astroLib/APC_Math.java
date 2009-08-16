@@ -11,7 +11,7 @@ public class APC_Math {
 //------------------------------------------------------------------------------
 //
 // Frac: Gives the fractional part of a number
-//*BU*
+//
 //------------------------------------------------------------------------------
 
 static double Frac (double x)
@@ -47,80 +47,7 @@ static double Ddd(int D, int M, double S)
     
   return  sign * ( Math.abs(D)+Math.abs(M)/60.0+Math.abs(S)/3600.0 );
 }
-
 //------------------------------------------------------------------------------
-//
-// Quad: Quadratic interpolation
-//
-//       Performs root finding and search for extreme values based on three 
-//       equidistant values of a function.
-//
-// Input:
-//
-//   y_minus   Value of function at x = -1
-//   y_0       Value of function at x =  0
-//   y_plus    Value of function at x =  1
-//
-// Output:
-//
-//   xe        Abscissa of extremum (may be outside [-1, 1])
-//   ye        Value of function at xe
-//   root1     First root found
-//   root2     Second root found
-//   n_root    Number of roots found in [-1, 1]
-//
-// Notes:
-//   
-//   Roots and location of an extremum are calculated from a parabola through
-//   the given functional values.
-//   To investigate functional values for other abscissas than -1, 0 and 1,
-//   a linear transformation of given values can be applied, if the given 
-//   abscissae are spaced equally.
-//
-//------------------------------------------------------------------------------
- 
- public static  double[] Quad ( double y_minus, double y_0, double y_plus)
-    { 
-     
-     double[] quadOut = new double[5];
-
-     double xe,  ye, root1,root2, n_root;
-     root1=Double.NaN;
-     root2=Double.NaN;
-     double a,b,c, dis, dx;
-     n_root = 0;
-
-     // Coefficients of interpolating parabola y=a*x^2+b*x+c
-     a  = 0.5*(y_plus+y_minus) - y_0;
-     b  = 0.5*(y_plus-y_minus);
-     c  = y_0;
-     
-     // Find extreme valuce
-     xe = -b/(2.0*a); 
-     ye = (a*xe+b) * xe + c;
-
-     dis = b*b - 4.0*a*c; // Discriminant of y=a*x^2+b*x+c
-
-     if (dis >= 0) // Parabola has roots 
-     {
-        dx = 0.5 * Math.sqrt (dis) / Math.abs (a);       
-        root1 = xe - dx; 
-        root2 = xe + dx;
-        if (Math.abs(root1) <= 1.0) ++n_root;  
-        if (Math.abs(root2) <= 1.0) ++n_root;
-        if (root1<-1.0) root1 = root2;
-        
-      }
-      quadOut[0]=xe;
-      quadOut[1]=ye;
-      quadOut[2]=root1;
-      quadOut[3]=root2;
-      quadOut[4]=n_root;     
-      
-      return quadOut;
-     }
-
- //------------------------------------------------------------------------------
 //
 // Pegasus: Root finder using the Pegasus method
 //

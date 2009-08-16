@@ -20,40 +20,31 @@ public class HijriCalendar {
      private int Lunation;
      private int hijriYear,hijriMonth,hijriDay;
      private boolean[]  isFound;
-     private double newMoonMoment; //Calculated time  for the New Moon in ModifiedJulianDays UTC
+     private double newMoonMoment;      //Calculated time  for the New Moon in ModifiedJulianDays UTC
      private double crescentMoonMoment; // Calculated time for the Crescent Moon in ModifiedJulianDays UTC
-     // private double timeDifferenceforET_UT;  // Correction variable due to  difference of ephemeris time and universal time
-   // System.out.println("MJD "+APC_Time.DateTimeHHMM(MJD));
-      final double synmonth=29.530588861;// Synodic Month Period
-      final double dT  = 7.0 / 36525.0;           // Step (1 week)
-      final double dTc  = 3.0 / 36525.0;          // Step (3 days)
-      final double Acc = (0.5/1440.0) / 36525.0;  // Desired Accuracy (0.5 min)
-      final double MJD_J2000=51544.5;
-      final double MLunatBase=23435.90347;  //  Modified Base date for E. W. Brown's numbered  series of
-                                        //  lunations (1923 January 16 02:41) 2423436-2400000.5=23435.5
-                                         //2423436.40347   23435,9034699998                                   // which is solved according to the 8 degrees elongation angle.
+     final double synmonth=29.530588861;// Synodic Month Period
+     final double dT  = 7.0 / 36525.0;           // Step (1 week)
+     final double dTc  = 3.0 / 36525.0;          // Step (3 days)
+     final double Acc = (0.5/1440.0) / 36525.0;  // Desired Accuracy (0.5 min)
+     final double MJD_J2000=51544.5;
+     final double MLunatBase=23435.90347; //  Modified Base date for E. W. Brown's numbered  series of
+                                           // lunations (1923 January 16 02:41) 2423436-2400000.5=23435.5
+                                           //2423436.40347   23435,9034699998                                   // which is solved according to the 8 degrees elongation angle.
  //    private double timeDifferenceforET_UT;  // Correction variable due to  difference of ephemeris time and universal time
 
 
     public HijriCalendar(int Year, int Month, int Day)
 
     {
-
-      //  MJD = MJD0 + Hour/24.0;//
-      // Constants
-
-      this.MJD= APC_Time.Mjd(Year, Month, Day, 0,0,0);
-    //cal=APC_Time.CalDat(MJD) ;
-  
-      cal=APC_Time.CalDat(MJD) ;
-    // System.out.println("MJD "+APC_Time.DateTimeHHMM(MJD));
- 
       
+      this.MJD= APC_Time.Mjd(Year, Month, Day, 0,0,0);
+      cal=APC_Time.CalDat(MJD) ;
+         
       double  Tnow,T0,T1,TNewMoon,TCrescent; // Time( Ephemeris:disabled) in Julian centuries since J2000
       double  D0, D1;  //Difference between the longitude of the Moon from the Sun.
-      Tnow = (MJD-MJD_J2000 ) / 36525.0;//0.09477070499657769
-      T1=Tnow;//-1/36525.0;//0.09474332648870637 24/6/2009
-      T0 = T1 - dT;  // decrease 1 week,//0.09455167693360712
+      Tnow = (MJD-MJD_J2000 ) / 36525.0;
+      T1=Tnow;//-1/36525.0;
+      T0 = T1 - dT;  // decrease 1 week
       isFound= new boolean[1];
       isFound[0]=false;
       // Search for phases   bracket desired phase event
@@ -69,22 +60,15 @@ public class HijriCalendar {
       // Correct for difference of ephemeris time and universal time currently disabled
       // ETminUT ( TPhase, ET_UT, valid );
       newMoonMoment = ( TNewMoon*36525.0+MJD_J2000);// - ET_UT/86400.0;
-      //System.out.println("newMoonMoment "+APC_Time.DateTimeHHMM(newMoonMoment ));
       Lunation=(int) Math.floor(( newMoonMoment+7-MLunatBase)/synmonth)+1;
       hijriYear= (Lunation+4)/12+1341;
       hijriMonth= (Lunation+4)%12+1;  // Returns 1 for Muharrem 2 for Safer  .... 12 for Zilhicce
-     // if (hijriMonth==0) hijriMonth=12;
-
-
-      //hijriMonth= (Lunation+5)%12;//Starting from 0..11  1=Muharrem 11=Zilhicce
       if ( isFound[0]){
           TCrescent=APC_Math.Pegasus(crescentMoon,TNewMoon,TNewMoon+dTc,Acc,isFound);
           crescentMoonMoment=  TCrescent*36525.0+MJD_J2000;
-         // System.out.println("crescentMoonMoment "+APC_Time.DateTimeHHMM(crescentMoonMoment ));
-      }
-       //0.279166666666667 comes from the hours 5:18 am
-   //  System.out.println(" MJD:" +(MJD));
-        hijriDay=(int) (MJD-Math.round(crescentMoonMoment+0.279166666666667))+1;
+         }
+     
+        hijriDay=(int) (MJD-Math.round(crescentMoonMoment+0.279166666666667))+1;  //0.279166666666667 comes from the hours 5:18 am
         if (hijriDay==0)
         {   hijriDay=30;
             hijriMonth--;
@@ -96,15 +80,13 @@ public class HijriCalendar {
      
  public int getHijriYear()
     {
-       
-       //  1341 (29 CemuzuyelEvvel) is the hicri day for the 17 January 1923
+       // 1341 (29 CemuzuyelEvvel) is the hicri day for the 17 January 1923
        // which is the start day of the Brown's Lunation Number;
         return hijriYear;
     }
     public String getHijriMonthName()
     {
-  //   System.out.println(hijriMonth);
-        return ismiSuhiri[(hijriMonth-1)];
+       return ismiSuhiri[(hijriMonth-1)];
     }
     public int getHijriMonth()
     {
@@ -141,7 +123,6 @@ public class HijriCalendar {
       */
    public String checkIfHolyDay ()
         {
-          //  cal=ModifiedJulianDay.CalDat(MJD) ;
             String holyDay="";
             switch (hijriMonth) {
             case 1: if (hijriDay==1) holyDay="NEWYEAR";
