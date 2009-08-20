@@ -1,14 +1,37 @@
-#summary One-sentence summary of this page.
+#TEXT OF RESOLUTIONS.
 
 = CONFERENCE FOR THE ADOPTION OF COMMON METHOD IN DETERMINING THE BEGINNINGS OF THE LUNAR MONTHS AND HOLIDAYS =
 ==27-30 NOVEMBER 1978==
-
-Add your content here.
-
-
+==TEXT OF RESOLUTIONS==
+Upon the invitation of the Presidency of Religious Affairs of Turkish Republic, Conference for Determining the beginnings of Lunar Months was held in Istanbul the historical capital of Islam, on 28 November 1978 thru1 30 November 1978/26 Zilhicca thru1 29 Zilhicca 1398 A.H. 
+Delegates from the following Islamic Countries joined the Conference. The names of these delegates are given in a separate list attached to this document: 
+* 1- Afghanistan
+* 2- Bahrain
+* 3- Bangladesh
+* 4- United Arab Emirates
+* 5- Algeria
+* 6- Indonesia
+* 7- Morocco
+* 8- Jordan
+* 9- Iraq 
+* 10- Cyprus
+* 11- Kuwait
+* 12- Lebanon
+* 13- Malaysia
+* 14- Central Asia and Kazakistan(U.S.S.R)
+* 15- Pakistan
+* 16- Sudan
+* 17- Saudi Arabia
+* 18- Tunusia
+* 19- Turkey 
+       In addition to these countries, the following establishments were also represented in the Conference
+* 20- Brussels Islamic Centre
+* 21- Paris Islamic Centre
+* 22- Rabıtatu' l Alemi-I Islami 
 = Details =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
+  * Deneme 
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
