@@ -1,20 +1,20 @@
 package astroLib;
+
 /**
  *
  * @author http://www.cepmuvakkit.com
  */
-public class APC_Math {    
+public class APC_Math {
 //------------------------------------------------------------------------------
 //
 // Frac: Gives the fractional part of a number
 //
 //------------------------------------------------------------------------------
 
-static double Frac (double x)
-{  
-   
-   return x-(long)x;
-}
+    static double Frac(double x) {
+
+        return x - (long) x;
+    }
 
 //------------------------------------------------------------------------------
 //
@@ -30,18 +30,21 @@ static double Frac (double x)
 // <return>:  Angle in decimal representation
 //*BU*
 //------------------------------------------------------------------------------
-static double Ddd(int D, int M, double S)
-{
-  //
-  // Variables
-  //
-  double sign;
+    static double Ddd(int D, int M, double S) {
+        //
+        // Variables
+        //
+        double sign;
 
 
-  if ( (D<0) || (M<0) || (S<0) ) sign = -1.0; else sign = 1.0;
-    
-  return  sign * ( Math.abs(D)+Math.abs(M)/60.0+Math.abs(S)/3600.0 );
-}
+        if ((D < 0) || (M < 0) || (S < 0)) {
+            sign = -1.0;
+        } else {
+            sign = 1.0;
+        }
+
+        return sign * (Math.abs(D) + Math.abs(M) / 60.0 + Math.abs(S) / 3600.0);
+    }
 //------------------------------------------------------------------------------
 //
 // Pegasus: Root finder using the Pegasus method
@@ -76,57 +79,58 @@ static double Ddd(int D, int M, double S)
 //   have different signs.
 //
 //------------------------------------------------------------------------------
-public static double Pegasus (MoonPhases moonPhase, double LowerBound, double UpperBound, double  Accuracy, boolean[] Success )
-{
+    public static double Pegasus(MoonPhases moonPhase, double LowerBound, double UpperBound, double Accuracy, boolean[] Success) {
 
 
- double x1=LowerBound;
- double x2=UpperBound;
- double f1 = moonPhase.calculatePhase(x1);
- double f2 = moonPhase.calculatePhase(x2);
- double x3 ,f3,Root;
- int MaxIterat = 30;
+        double x1 = LowerBound;
+        double x2 = UpperBound;
+        double f1 = moonPhase.calculatePhase(x1);
+        double f2 = moonPhase.calculatePhase(x2);
+        double x3, f3, Root;
+        int MaxIterat = 30;
 
-  int Iterat = 0;
+        int Iterat = 0;
 
-   // Initialization
-  Success[0] = false;
-  Root    = x1;
+        // Initialization
+        Success[0] = false;
+        Root = x1;
 
 
-  // Iteration
-  if ( f1 * f2 < 0.0 )
-    do
-    {
-      // Approximation of the root by interpolation
-      x3 = x2 - f2/( (f2-f1)/(x2-x1) ); f3 = moonPhase.calculatePhase(x3);
+        // Iteration
+        if (f1 * f2 < 0.0) {
+            do {
+                // Approximation of the root by interpolation
+                x3 = x2 - f2 / ((f2 - f1) / (x2 - x1));
+                f3 = moonPhase.calculatePhase(x3);
 
-      // Replace (x1,f2) and (x2,f2) by new values, such that
-      // the root is again within the interval [x1,x2]
-      if ( f3 * f2 <= 0.0 ) {
-        // Root in [x2,x3]
-        x1 = x2; f1 = f2; // Replace (x1,f1) by (x2,f2)
-        x2 = x3; f2 = f3; // Replace (x2,f2) by (x3,f3)
-      }
-      else {
-        // Root in [x1,x3]
-        f1 = f1 * f2/(f2+f3); // Replace (x1,f1) by (x1,f1')
-        x2 = x3; f2 = f3;     // Replace (x2,f2) by (x3,f3)
-      }
+                // Replace (x1,f2) and (x2,f2) by new values, such that
+                // the root is again within the interval [x1,x2]
+                if (f3 * f2 <= 0.0) {
+                    // Root in [x2,x3]
+                    x1 = x2;
+                    f1 = f2; // Replace (x1,f1) by (x2,f2)
+                    x2 = x3;
+                    f2 = f3; // Replace (x2,f2) by (x3,f3)
+                } else {
+                    // Root in [x1,x3]
+                    f1 = f1 * f2 / (f2 + f3); // Replace (x1,f1) by (x1,f1')
+                    x2 = x3;
+                    f2 = f3;     // Replace (x2,f2) by (x3,f3)
+                }
 
-      if (Math.abs(f1) < Math.abs(f2))
-                                                                          Root = x1;
-      else
-        Root = x2;
+                if (Math.abs(f1) < Math.abs(f2)) {
+                    Root = x1;
+                } else {
+                    Root = x2;
+                }
 
-      Success[0]  = (Math.abs(x2-x1) <= Accuracy);
-      Iterat++;
+                Success[0] = (Math.abs(x2 - x1) <= Accuracy);
+                Iterat++;
+            } while (!Success[0] && (Iterat < MaxIterat));
+        }
+
+        return Root;
     }
-    while ( !Success[0]  && (Iterat<MaxIterat) );
-
- return Root;
-}
-
 }
 
      
