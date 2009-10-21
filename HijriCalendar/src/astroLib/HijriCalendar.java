@@ -186,49 +186,4 @@ public class HijriCalendar {
      
 
 
-    /*
-    //------------------------------------------------------------------------------
-    //
-    // ETminUT: Difference ET-UT of ephemeris time and universal time
-    //
-    // Input:
-    //
-    //   T         Time in Julian centuries since J2000
-    //
-    // Output:
-    //
-    //   DTsec     ET-UT in [s]
-    //   valid     Flag indicating T in domain of approximation
-    //
-    // Notes: The approximation spans the years from 1825 to 2005
-    //
-    //------------------------------------------------------------------------------
-    void getETDifferenceInMinUT (double T, double& DTsec, bool& valid)
-    {
-    //
-    // Variables
-    //
-    int    i = (int) floor(T/0.25);
-    double t = T-i*0.25;
-
-
-    if ( (T<-1.75) || (0.05<T) ) {
-    valid = false;
-    DTsec = 0.0;
-    }
-    else {
-    valid = true;
-    switch (i) {
-    case -7: DTsec=10.4+t*(-80.8+t*( 413.9+t*( -572.3))); break; // 1825-
-    case -6: DTsec= 6.6+t*( 46.3+t*(-358.4+t*(   18.8))); break; // 1850-
-    case -5: DTsec=-3.9+t*(-10.8+t*(-166.2+t*(  867.4))); break; // 1875-
-    case -4: DTsec=-2.6+t*(114.1+t*( 327.5+t*(-1467.4))); break; // 1900-
-    case -3: DTsec=24.2+t*( -6.3+t*(  -8.2+t*(  483.4))); break; // 1925-
-    case -2: DTsec=29.3+t*( 32.5+t*(  -3.8+t*(  550.7))); break; // 1950-
-    case -1: DTsec=45.3+t*(130.5+t*(-570.5+t*( 1516.7))); break; // 1975-
-    case  0: t+=0.25;
-    DTsec=45.3+t*(130.5+t*(-570.5+t*( 1516.7)));        // 2000-
-    }                                                              // 2005
-    }
-    }*/
 }
