@@ -15,7 +15,7 @@ public class HijriCalTest {
          "Please keep in mind hijri dates starts with magrib prayer, this converter checks only the gregorian days after 12:00 pm.\n"+
          "Input  Date must be  later that 1/1/2000 \n"+
          "***This  code cannot used unless  resource is stated which is www.cepmuvakkit.com and cannot used for commercial purposes without  permission***");
-        BufferedReader br;
+       /* BufferedReader br;
         System.out.print("Enter Gregorian Year  = ");
         br = new BufferedReader(new InputStreamReader(System.in));
         try {  year =Integer.parseInt(br.readLine());  } catch (IOException ioe) { System.out.println("Wrong input!");    System.exit(1);   }
@@ -24,7 +24,8 @@ public class HijriCalTest {
         System.out.print("Enter Gregorian Day = ");
         try {    day =Integer.parseInt(br.readLine()); } catch (IOException ioe) {     System.out.println("Wrong input!"); System.exit(1);  }
 
-        HijriCalendar hijriCalendar =new HijriCalendar( year,month,day);
+        HijriCalendar hijriCalendar =new HijriCalendar( year,month,day);*/
+        HijriCalendar hijriCalendar =new HijriCalendar(2001,3,1);
         String hijriDate=hijriCalendar.getHicriTakvim();
         System.out.println("HijriDate ="+hijriDate);
 
