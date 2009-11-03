@@ -51,8 +51,8 @@ public  double calculatePhase(double T)
 
 
   //if (LongDiff<0)  LongDiff=LongDiff+pi2;
-  return ((LongDiff+Math.PI)%pi2)-Math.PI;
- // return    Modulo ( LongDiff+Math.PI,pi2)-Math.PI;
+//  return ((LongDiff+Math.PI)%pi2)-Math.PI;
+ return    Modulo ( LongDiff+Math.PI,pi2)-Math.PI;
 }
 //------------------------------------------------------------------------------
 //
